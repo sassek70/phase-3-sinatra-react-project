@@ -32,7 +32,7 @@ class ApplicationController < Sinatra::Base
   #Add new ingredient
   post "#{@user}/:id/ingredients" do
     user = User.find(params[:id])
-    Ingredient.add_ingredient(name: params[:name], quantity: params[:quantity], user_id: params[:id])
+    Ingredient.add_ingredient(name: params[:name], quantity: params[:quantity], user_id: params[:id]).to_json
     # Ingredient.create(name: params[:name])
     # UserIngredient.create(user_id: user.id, ingredient_id: Ingredient.last.id, quantity: params[:quantity], in_stock: params[:in_stock]).to_json
   end

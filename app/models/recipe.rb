@@ -6,18 +6,21 @@ class Recipe < ActiveRecord::Base
 
 
     def self.add_recipe(name, cuisine, times_cooked = 0, instructions, user)
-        check_cuisine = Cuisine.find_by(name: cuisine.downcase) ? Cuisine.find_by(name: cuisine.downcase) : Cuisine.create(name: cuisine.titleize) 
-        check_recipe = Recipe.find_by(name: name.downcase) 
+        check_recipe = Recipe.find_by("name like ?", name)
 
-        if Recipe.exists?(name: name.downcase) == true and UserRecipe.exists?(recipe_id: check_recipe) == true
+        # checks to see if the user added recipe exists in the Recipes table, then checks agains the User's list
+        # If the new recipe exists in master list, this method adds it to the user. If it does not exists in master list
+        # this methods add recipe to both tables
+        if check_recipe and UserRecipe.exists?(recipe_id: check_recipe) == true
             "Recipe already on your list"
-        elsif Recipe.exists?(name: name.downcase) == true and UserRecipe.exists?(recipe_id: check_recipe) == false
-            UserRecipe.create(user_id: user.id, recipe_id: check_recipe.id)
-        else 
-            new_recipe = Recipe.create(name: name.titleize, cuisine_id: check_cuisine.id, times_cooked: times_cooked, instructions: instructions)
-            UserRecipe.create(user_id: user.id, recipe_id: new_recipe.id)
+        elsif check_recipe and UserRecipe.exists?(recipe_id: check_recipe) == false
+            UserRecipe.create(user_id: user_id, recipe_id: check_recipe.id, quantity: quantity)
+            "Recipe exists, added to user list"
+        else
+            new_recipe = Recipe.create(name: name.titleize)
+            UserRecipe.create(user_id: user_id, recipe_id: new_recipe.id, quantity: quantity, in_stock: in_stock)
+            "Recipe created and added to user list"
         end
     end
-
 
 end

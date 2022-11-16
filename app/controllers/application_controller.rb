@@ -42,8 +42,9 @@ class ApplicationController < Sinatra::Base
     UserIngredient.delete_ingredient(ingredient_id: params[:ingredient_id], user_id: params[:id]).to_json
   end
 
-  post "/recipes" do
-    Recipe.create(name: params[:name]).to_json
-    UserRecipe.create(user_id: params[:user_id], recipe_id: params[:recipe_id]).to_json
+  #Add new recipe
+  post "#{@user}/:id//recipes" do
+    user = User.find(params[:id])
+    Recipe.add_recipe(name: params[:name], quantity: params[:quantity], user_id: params[:id]).to_json
   end
 end

@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
         self.user_recipes.map do |recipe|
             Recipe.find(recipe.recipe_id)
         end
-    end
+    end 
 
     def my_cuisines
         self.user_recipes.map do |recipe|

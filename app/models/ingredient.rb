@@ -2,7 +2,7 @@ class Ingredient < ActiveRecord::Base
     belongs_to :user
     belongs_to :recipe
     
-    def self.add_ingredient(name, quantity, user)
+    def self.add_ingredient(name:, quantity:, user_id:)
         check_ingredient = Ingredient.find_by(name: name.downcase)
         in_stock = true
 
@@ -17,10 +17,10 @@ class Ingredient < ActiveRecord::Base
         if Ingredient.exists?(name: name.downcase) == true and UserIngredient.exists?(ingredient_id: check_ingredient) == true
             "Ingredient already on your list"
         elsif Ingredient.exists?(name: name.downcase) == true and UserIngredient.exists?(ingredient_id: check_ingredient) == false
-            UserIngredient.create(user_id: user.id, ingredient_id: check_ingredient.id, quantity: quantity)
+            UserIngredient.create(user_id: user_id, ingredient_id: check_ingredient.id, quantity: quantity)
         else
             new_ingredient = Ingredient.create(name: name.titleize)
-            UserIngredient.create(user_id: user.id, ingredient_id: new_ingredient.id, quantity: quantity, in_stock: in_stock)
+            UserIngredient.create(user_id: user_id, ingredient_id: new_ingredient.id, quantity: quantity, in_stock: in_stock)
         end
         
     end

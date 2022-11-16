@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 
     ###---------- User ingredient methods ----------###
     def my_ingredients
-        self.user_ingredients.map do |ingredient|
+        UserIngredient.where(user_id: self.id).map do |ingredient|
             Ingredient.find(ingredient.ingredient_id)
         end
     end
@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
 
     ###---------- User dish methods ----------###
     def my_recipes
-        self.user_recipes.map do |recipe|
+        UserRecipe.where(user_id: self.id).map do |recipe|
             Recipe.find(recipe.recipe_id)
         end
     end 

@@ -59,14 +59,14 @@ class ApplicationController < Sinatra::Base
 
   #Update cooked count
   patch "/recipes/:id/cook" do
-    user = User.includes(:ingredients).find(params[:user_id])
-    recipe = Recipe.includes(:ingredients).find(params[:id])
+    user = User.find(params[:user_id])
+    recipe = Recipe.find(params[:id])
     can_cook = recipe.can_cook(user.ingredients)
     can_cook ? Recipe.cook_recipe(recipe_id: params[:id]).to_json : "Missing ingredients"
   end
 
   get "#{@user}/:id/canCook" do
-    user = User.includes(:ingredients).find(params[:id])
+    user = User.find(params[:id])
     available_recipes = Recipe.all.filter do |recipe|
       recipe.can_cook(user.ingredients)
     end    

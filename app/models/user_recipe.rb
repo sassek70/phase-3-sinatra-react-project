@@ -1,6 +1,6 @@
 class UserRecipe < ActiveRecord::Base 
     belongs_to :user
-    has_many :recipes
+    belongs_to :recipes
 
     # def self.delete_recipe(name)
     #     to_delete = Recipe.all.find do |recipe|

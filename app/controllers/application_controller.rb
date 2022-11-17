@@ -43,8 +43,34 @@ class ApplicationController < Sinatra::Base
   end
 
   #Add new recipe
-  post "#{@user}/:id//recipes" do
+  post "#{@user}/:id/recipes" do
     user = User.find(params[:id])
-    Recipe.add_recipe(name: params[:name], quantity: params[:quantity], user_id: params[:id]).to_json
+    Recipe.add_recipe(name: params[:name], cuisine: params[:cuisine], times_cooked: params[:times_cooked], instructions: params[:instructions], user_id: params[:id]).to_json
   end
+
+  #Delete user's recipe
+  delete "#{@user}/:id/recipes/:recipe_id" do
+    UserRecipe.delete_recipe(recipe_id: params[:recipe_id], user_id: params[:id]).to_json
+    # if user_deleted_recipe 
+    #   return user_deleted_recipe.to_json
+    # end
+    # status 404
+  end
+
+  #Update cooked count
+  patch "/recipes/:id/cook" do
+    user = User.includes(:ingredients).find(params[:user_id])
+    recipe = Recipe.includes(:ingredients).find(params[:id])
+    can_cook = recipe.can_cook(user.ingredients)
+    can_cook ? Recipe.cook_recipe(recipe_id: params[:id]).to_json : "Missing ingredients"
+  end
+
+  get "#{@user}/:id/canCook" do
+    user = User.includes(:ingredients).find(params[:id])
+    available_recipes = Recipe.all.filter do |recipe|
+      recipe.can_cook(user.ingredients)
+    end    
+    available_recipes.to_json
+  end
+
 end

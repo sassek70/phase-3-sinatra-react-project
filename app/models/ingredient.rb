@@ -1,6 +1,8 @@
 class Ingredient < ActiveRecord::Base
-    belongs_to :user
-    belongs_to :recipe
+    has_many :user_ingredients
+    has_many :users, through: :user_ingredients
+    has_many :recipe_ingredients
+    has_many :recipes, through: :recipe_ingredients
     
     def self.add_ingredient(name:, quantity:, user_id:)
         check_ingredient = Ingredient.find_by("name like ?", name)

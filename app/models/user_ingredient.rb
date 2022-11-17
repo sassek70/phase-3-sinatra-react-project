@@ -1,5 +1,5 @@
 class UserIngredient < ActiveRecord::Base 
-    has_many :ingredients
+    belongs_to :ingredient
     belongs_to :user
 
     # Deletes ingredient from specific User only.

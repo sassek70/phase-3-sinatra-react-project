@@ -29,6 +29,12 @@ class ApplicationController < Sinatra::Base
     Ingredient.all.to_json
   end
 
+  #Get all recipes
+  get "/recipes" do
+    Recipe.all.to_json
+  end
+  
+
   #Add new ingredient
   post "#{@user}/:id/ingredients" do
     user = User.find(params[:id])

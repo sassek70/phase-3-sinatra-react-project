@@ -28,7 +28,7 @@ class Recipe < ActiveRecord::Base
         end
     end
 
-    def self.cook_recipe(recipe_id:)
+    def self.cook_recipe(recipe_id)
         recipe = Recipe.find(recipe_id)
         recipe.update(times_cooked: recipe.times_cooked + 1)
         recipe

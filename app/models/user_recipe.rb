@@ -13,6 +13,7 @@ class UserRecipe < ActiveRecord::Base
 
     def self.delete_recipe(recipe_id:, user_id:)
         UserRecipe.find_by(recipe_id: recipe_id, user_id: user_id).delete
+        "Recipe has been removed from your list"
         # if user_deleted_recipe != nil 
         #     user_deleted_recipe.delete
         #     return true

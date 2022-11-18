@@ -14,6 +14,7 @@ class UserIngredient < ActiveRecord::Base
 
     def self.delete_ingredient(ingredient_id:, user_id:)
         UserIngredient.find_by(ingredient_id: ingredient_id, user_id: user_id).delete
+        "Ingredient has been removed from your list"
     end
 
 end
